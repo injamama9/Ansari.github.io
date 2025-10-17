@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Injamam Portfolio</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    /* --- Custom Variables & Base Styles --- */
+    :root {
+      --sidebar-bg: #172134;
+      /* Dark Blue */
+      --main-bg: #101827;
+      /* Very Dark Blue */
+      --card-bg: #1f2937;
+      /* Dark Gray/Blue for cards */
+      --accent-color: #38c172;
+      /* Green */
+      --text-color: #e0eeef;
+      /* Off White */
+    }
+
+    body {
+      background-color: var(--main-bg);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      /* Enable native smooth scroll */
+    }
+
+    /* --- Sidebar & Responsiveness --- */
+    .sidebar {
+      width: 300px;
+      background-color: var(--sidebar-bg);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      /* Full height for scrollable content */
+      overflow-y: auto;
+      /* Enable scrolling if sidebar content overflows */
+    }
+
+    .main-content {
+    
+      margin-left: 300px;
+      width: calc(100% - 300px);
+      transition: margin-left 0.3s ease-in-out;
+      padding: 40px;
+    }
+
+    @media (max-width: 1200px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .sidebar.active {
+        transform: translateX(0);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    /* Navigation Links */
+    .nav-link.active {
+      background-color: var(--accent-color);
+      color: var(--sidebar-bg);
+      font-weight: 600;
+    }
+
+    .nav-link:not(.active):hover {
+      background-color: rgba(56, 193, 114, 0.1);
+      color: var(--accent-color);
+    }
+
+    /* --- Content Section Styling (All sections visible) --- */
+    .content-section {
+      /* No display: none; needed anymore - all are visible */
+      min-height: calc(100vh - 40px);
+      margin-bottom: 40px;
+      padding: 3rem;
+      background-color: var(--card-bg);
+      border-radius: 1rem;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* --- Skill Bar Animation --- */
+    .progress-bar {
+      width: 0;
+      transition: width 1.5s ease-out;
+      /* Smooth animation */
+    }
+
+    /* --- Portfolio Hover Animation --- */
+    .portfolio-item-overlay {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .portfolio-item:hover .portfolio-item-overlay {
+      opacity: 1;
+    }
+
+    .portfolio-item img {
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.1);
+      /* Zoom effect on hover */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Mobile Menu Toggle Button -->
+  <button class="menu-toggle p-3 rounded-md shadow-lg fixed top-4 left-4 z-[2000] bg-green-500 text-gray-900 lg:hidden"
+    onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- === 1. SIDEBAR NAVIGATION === -->
+  <aside class="sidebar p-6 flex flex-col" id="sidebar">
+    <!-- Close Button for Mobile -->
+    <button class="lg:hidden absolute top-4 right-4 text-3xl text-gray-400 hover:text-white" onclick="toggleSidebar()">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Profile Card -->
+   <div class="p-5 rounded-xl text-center mb-6 mt-8 lg:mt-0"> 
+  <img 
+    src="not hd.png" 
+    alt="Mark Andersen" 
+    class="w-46 h-46 object-cover rounded-none mx-auto mb-3 border-4 border-green-500 
+           transition-transform duration-500 ease-in-out 
+           hover:scale-110 hover:rotate-3 
+           hover:shadow-[0_0_30px_#22c55e] hover:border-green-400">
+  
+  <h2 class="text-xl font-semibold text-white mt-2">MD INJAMAM ANSARI</h2>
+</div>
+
+
+
+    <!-- Navigation Links (Using standard href anchors) -->
+    <ul class="nav-links flex-grow space-y-1">
+
+      <li><a href="#home-section" class="nav-link active flex items-center p-3 rounded-lg" data-target="home-section"><i
+            class="fas fa-home mr-4"></i> Home</a></li>
+
+
+      <li><a href="#about-section" class="nav-link flex items-center p-3 rounded-lg" data-target="about-section"><i
+            class="fas fa-user mr-4"></i> About</a></li>
+    
+       <li><a href="#skills-section" class="nav-link flex items-center p-3 rounded-lg" data-target="skills-section"><i
+            class="fas fa-cogs mr-4"></i> Skills</a></li>
+    
+
+      <li><a href="#resume-section" class="nav-link flex items-center p-3 rounded-lg" data-target="resume-section"><i
+            class="fas fa-file-alt mr-4"></i> Resume</a></li>
+
+    
+
+      <li><a href="#portfolio-section" class="nav-link flex items-center p-3 rounded-lg"
+          data-target="portfolio-section"><i class="fas fa-th-large mr-4"></i> Portfolio</a></li>
+      <li><a href="#services-section" class="nav-link flex items-center p-3 rounded-lg"
+          data-target="services-section"><i class="fas fa-handshake mr-4"></i> Services</a></li>
+      <li><a href="#contact-section" class="nav-link flex items-center p-3 rounded-lg" data-target="contact-section"><i
+            class="fas fa-envelope mr-4"></i> Contact</a></li>
+    </ul>
+    <!-- Empty element to keep footer space fixed on large screens -->
+    <div class="h-20"></div>
+
+    <div class="flex justify-center space-x-4 mb-10">
+      <a href="#"
+        class="h-10 w-10 bg-green-500 text-gray-900 rounded-full flex items-center justify-center text-xl hover:bg-green-600 transition"><i
+          class="fab fa-twitter"></i></a>
+      <a target="_blank" href="https://www.facebook.com/rahmanhajd.ansari.3939"
+        class="h-10 w-10 bg-green-500 text-gray-900 rounded-full flex items-center justify-center text-xl hover:bg-green-600 transition"><i
+          class="fab fa-facebook-f"></i></a>
+      <a target="_blank" href="https://www.instagram.com/ov__injmam/?igsh=MW9scTdyeGI0bWFqdw%3D%3D#"
+        class="h-10 w-10 bg-green-500 text-gray-900 rounded-full flex items-center justify-center text-xl hover:bg-green-600 transition"><i
+          class="fab fa-instagram"></i></a>
+      <a href="#"
+        class="h-10 w-10 bg-green-500 text-gray-900 rounded-full flex items-center justify-center text-xl hover:bg-green-600 transition"><i
+          class="fab fa-skype"></i></a>
+      <a target="_blank" href="https://www.linkedin.com/in/md-injamam-ansari-aa3911367/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B8QMHxXi1SjWOYPuWM9kkNg%3D%3D"
+        class="h-10 w-10 bg-green-500 text-gray-900 rounded-full flex items-center justify-center text-xl hover:bg-green-600 transition"><i
+          class="fab fa-linkedin-in"></i></a>
+    </div>
+  </aside>
+
+
+  <!-- === MAIN CONTENT AREA (Scrollable) === -->
+
+  <br><br><br>
+ <main class="main-content min-h-screen">
+
+    <!-- ============================================== -->
+    <!-- 2. HOME/HERO SECTION -->
+    <!-- ============================================== -->
+ <section id="home-section">
+
+<!-- Home Section Content -->
+<div class="flex flex-col lg:flex-row items-center justify-between min-h-[80vh] px-6 sm:px-12 py-16">
+
+  <!-- Left Side -->
+  <div class="lg:w-1/2 max-w-lg mb-10 lg:mb-0 scroll-animate">
+    <h1 class="text-4xl sm:text-5xl font-bold text-white leading-tight mb-4">
+      <span id="typewriter-home" class="text-green-500 border-b-4 border-green-500"></span>
+    </h1>
+
+<!-- Premium Cinematic Typewriter -->
+<h2 id="typewriter-home"  
+  class="text-3xl md:text-4xl font-bold text-white tracking-wide 
+  drop-shadow-[0_0_10px_rgba(16,185,129,0.6)] select-none no-underline mb-0 
+  transition-opacity duration-700 ease-in-out opacity-0 
+  after:content-['|'] after:ml-1 after:text-green-400 after:animate-pulse ">
+</h2>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const texts = ["Web Developer", "UI/UX Designing"]; // 👈 your roles
+  const typeEl = document.getElementById("typewriter-home");
+  let i = 0;
+  let textIndex = 0;
+  let isDeleting = false;
+
+  function typeEffect() {
+    const current = texts[textIndex];
+    const speed = isDeleting ? 60 : 100;
+    const updatedText = current.substring(0, i);
+    typeEl.textContent = updatedText;
+
+    // fade in while typing
+    if (i === 1) typeEl.classList.add("opacity-100");
+
+    if (!isDeleting && i < current.length) {
+      i++;
+    } else if (isDeleting && i > 0) {
+      i--;
+    } else {
+      if (!isDeleting) {
+        // pause & fade out before deleting
+        setTimeout(() => {
+          typeEl.classList.remove("opacity-100");
+          setTimeout(() => (isDeleting = true, typeEffect()), 500);
+        }, 1200);
+        return;
+      } else {
+        isDeleting = false;
+        textIndex = (textIndex + 1) % texts.length;
+      }
+    }
+
+    setTimeout(typeEffect, speed);
+  }
+
+  typeEffect();
+});
+</script>
+
+<style>
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+</style>
+
+    <p class="text-gray-400 text-lg mb-0">
+     Web Developer & UI/UX Designing | Crafting Stunning, Responsive & High-Performance Websites | Expert in HTML5, CSS3, Bootstrap, JavaScript, PHP & MySQL | Turning Ideas into Powerful Digital Experiences.
+
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+      <a href="#portfolio-section"
+        class="bg-green-500 text-gray-900 font-bold py-3 px-6 rounded-md hover:opacity-90 transition">View My Work</a>
+      <a href="#contact-section"
+        class="border-2 border-green-500 text-green-500 font-bold py-3 px-6 rounded-md hover:bg-green-500 hover:text-gray-900 transition">Get In Touch</a>
+    </div>
+    <!-- Stats Section -->
+    <div class="flex flex-wrap gap-8">
+      <div>
+        <h3 class="text-3xl font-bold text-green-500">50+</h3>
+        <p class="text-gray-400">Projects Completed</p>
+      </div>
+      <div>
+        <h3 class="text-3xl font-bold text-green-500">3+</h3>
+        <p class="text-gray-400">Month Experience</p>
+      </div>
+      <div>
+        <h3 class="text-3xl font-bold text-green-500">5+</h3>
+        <p class="text-gray-400">Awards Achievements</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side Hero Image -->
+  <div class="relative lg:w-1/2 max-w-md h-[450px] flex justify-center items-center scroll-animate">
+
+   <!-- ✨ Profile Card Container -->
+<div class="relative group w-full max-w-[480px] h-[520px] mx-auto overflow-hidden rounded-3xl shadow-2xl border-4 border-transparent 
+            bg-gradient-to-tr from-green-400 via-emerald-500 to-teal-500 p-[4px] transition-all duration-700 
+            hover:scale-105 hover:shadow-[0_0_50px_rgba(34,197,94,0.7)] animate-float">
+
+  <!-- 🌆 Profile Image -->
+  <img 
+    src="stylepic1.jpg" 
+    alt="Mark Andersen Hero" 
+    class="w-full h-full object-cover rounded-3xl opacity-95 group-hover:opacity-100 transition duration-700 ease-in-out animate-slow-tilt"
+  >
+
+  <!-- 🌈 Overlay for hover glow -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent 
+              opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-3xl"></div>
+
+  <!-- 💬 Text Overlay -->
+  <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 text-center 
+              opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+    <h2 class="text-white text-2xl font-semibold drop-shadow-lg">Md Injamam </h2>
+    <p class="text-gray-200 text-base tracking-wide">Web Developer</p>
+  </div>
+</div>
+
+<!-- 💫 Floating & Rotation Animation Styles -->
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes slow-tilt {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(1.5deg) scale(1.02); }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-slow-tilt {
+  animation: slow-tilt 8s ease-in-out infinite;
+}
+</style>
+
+
+
+    <!-- Floating Tags -->
+   <!-- 🌟 Floating Skill Tags -->
+<div class="absolute top-4 right-[-50px] px-4 py-2 bg-white/10 backdrop-blur-md 
+            rounded-full text-sm flex items-center gap-2 border border-white/20 
+            text-emerald-400 font-semibold shadow-[0_0_15px_rgba(16,185,129,0.3)] 
+            hidden sm:flex transform hover:scale-110 hover:shadow-[0_0_25px_rgba(16,185,129,0.6)] 
+            transition-all duration-500 animate-float-slow hover:text-white">
+  <i class="fas fa-palette text-emerald-400 group-hover:text-white"></i>
+  UI/UX Design
+</div>
+
+<div class="absolute bottom-1/3 left-[-55px] px-4 py-2 bg-white/10 backdrop-blur-md 
+            rounded-full text-sm flex items-center gap-2 border border-white/20 
+            text-blue-400 font-semibold shadow-[0_0_15px_rgba(96,165,250,0.3)] 
+            hidden sm:flex transform hover:scale-110 hover:shadow-[0_0_25px_rgba(96,165,250,0.6)] 
+            transition-all duration-500 animate-float hover:text-white">
+  <i class="fas fa-code text-blue-400 group-hover:text-white"></i>
+  Web Development
+</div>
+
+<div class="absolute bottom-1/4 right-[-55px] px-4 py-2 bg-white/10 backdrop-blur-md 
+            rounded-full text-sm flex items-center gap-2 border border-white/20 
+            text-pink-600 font-semibold shadow-[0_0_15px_rgba(244,114,182,0.3)] 
+            hidden sm:flex transform hover:scale-110 hover:shadow-[0_0_25px_rgba(244,114,182,0.6)] 
+            transition-all duration-500 animate-float-reverse hover:text-white">
+  <i class="fas fa-camera text-pink-500 group-hover:text-blue"></i>
+  Photography
+</div>
+
+<!-- 🌈 Animations -->
+<style>
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(10px); }
+}
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+.animate-float-reverse {
+  animation: float-reverse 6s ease-in-out infinite;
+}
+</style>
+
+
+  </div>
+
+</div>
+
+<!-- Tailwind Custom Animations -->
+<style>
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-up {
+  animation: slide-up 1s ease-in-out forwards;
+}
+.animate-slide-right {
+  animation: slide-right 1s ease-in-out forwards;
+}
+
+/* 3D Tilt Image */
+.tilt-image {
+  perspective: 1000px;
+  transition: transform 0.3s ease;
+}
+.tilt-image:hover {
+  transform: rotateY(15deg) rotateX(10deg) scale(1.05);
+}
+
+/* Scroll Animation */
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+
+<!-- Scroll Observer JS -->
+<script>
+
+const scrollElements = document.querySelectorAll(".scroll-animate");
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, { threshold: 0.1 });
+scrollElements.forEach(el => observer.observe(el));
+</script>
+
+</section>
+    <!-- ============================================== -->
+    <!-- 3. ABOUT SECTION -->
+    <!-- ============================================== -->
+
+
+<br><br><br><br><br><br><br><br>
+
+ <section id="about-section">
+<!-- About Content -->
+<div class="text-center mb-10 animate-slide-up">
+  <h1 class="text-4xl sm:text-5xl font-bold text-white mb-2">Hi, I'm Md Injamam Ansari</h1>
+  <p class="text-lg sm:text-xl text-green-400">Websites Developer & Creative Strategist</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 animate-slide-up">
+  <!-- Left Column -->
+  <div class="lg:col-span-1 space-y-6 flex flex-col items-center lg:items-start">
+    <img 
+      src="hd-img.png" 
+      alt="Profile Picture"
+      class="relative w-full max-w-sm lg:max-w-md rounded-2xl object-cover shadow-2xl transform transition duration-700 ease-in-out hover:scale-105 hover:rotate-1"
+    >
+    <div class="text-sm text-gray-400 space-y-2 pt-4">
+      <p class="flex items-center gap-3"><i class="fas fa-map-marker-alt text-green-500"></i> Punjab Bathinda Talwandi-sabo</p>
+      <p class="flex items-center gap-3"><span class="h-2 w-2 bg-green-500 rounded-full"></span> Available for projects</p>
+    </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="lg:col-span-2 space-y-6">
+    <div class="text-gray-300 text-lg space-y-4">
+      <p>I'm a passionate Web Developer, creating modern, responsive websites and web applications. I specialize in front-end development and enjoy taking on new challenges. I continuously explore and work with emerging technologies.</p>
+      <p>So far, I have experience with Php web technologies and possess strong knowledge of <strong>HTML5, CSS3, Bootstrap 5, JavaScript, Tailwind CSS, PHP, C/C++, and Java.</strong>  I am also comfortable working in a collaborative team environment.</p>
+    </div>
+<strong></strong>
+    <!-- Expertise/Skills List -->
+    <div class="space-y-6 pt-4">
+      <div class="flex items-start gap-4">
+        <div class="text-green-400 text-3xl p-2 bg-green-500/10 rounded-lg flex-shrink-0"><i class="fas fa-lightbulb"></i></div>
+        <div>
+          <h4 class="text-xl font-semibold text-white">Good Strategy</h4>
+          <p class="text-gray-400">User research, journey mapping, and strategic design thinking</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <div class="text-green-400 text-3xl p-2 bg-green-500/10 rounded-lg flex-shrink-0"><i class="fas fa-mobile-alt"></i></div>
+        <div>
+          <h4 class="text-xl font-semibold text-white">  Web Design & developing</h4>
+          <p class="text-gray-400">Responsive interfaces and seamless user experiences</p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4">
+        <div class="text-green-400 text-3xl p-2 bg-green-500/10 rounded-lg flex-shrink-0"><i class="fas fa-chart-line"></i></div>
+        <div>
+          <h4 class="text-xl font-semibold text-white">Design Systems</h4>
+          <p class="text-gray-400">Scalable component libraries and brand consistency</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tailwind Animations -->
+<style>
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slide-up 1s ease-in-out forwards;
+}
+</style>
+
+</section>
+    <!-- ============================================== -->
+    <!-- 4. SKILLS SECTION -->
+    <!-- ============================================== -->
+<!-- Tailwind CSS CDN -->
+ <br><br><br><br><br><br><br>
+
+ <section id="skills-section">
+
+<!-- Skills Content --> 
+<div class="text-center mb-10 scroll-animate">
+  <h2 class="text-3xl sm:text-4xl font-bold text-white relative inline-block pb-3">
+    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-12 bg-green-500 rounded-full"></span>
+    Skills
+  </h2>
+  <p class="mt-4 max-w-xl mx-auto text-gray-400">
+    "Proficient in front-end and back-end development, creating responsive, user-friendly websites and web applications using modern technologies."
+  </p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-animate">
+  <!-- Front-end Development Card -->
+  <div class="bg-gray-810 p-6 rounded-xl shadow-lg">
+    <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-600 pb-2 flex items-center gap-2">
+      <i class="fa-solid fa-code text-green-400 text-2xl"></i> Front-end Development
+    </h3>
+
+    <div class="space-y-4 skill-container">
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa-html5 text-orange-500 text-lg"></i> HTML5/CSS3
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="80"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa-js text-yellow-400 text-lg"></i> JavaScript
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="70"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa-bootstrap text-blue-400 text-lg"></i> Bootstrap 5
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="80"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa- text-blue-400 text-lg"></i>Tailwind CSS
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="60"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back-end Development Card -->
+  <div class="bg-gray-810 p-6 rounded-xl shadow-lg">
+    <h3 class="text-2xl font-bold text-white mb-6 border-b border-gray-600 pb-2 flex items-center gap-2">
+      <i class="fa-solid fa-server text-green-400 text-2xl"></i> Back-end Development
+    </h3>
+
+    <div class="space-y-4 skill-container">
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa-php text-green-500 text-lg"></i> Php
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="75"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-brands fa-java text-yellow-400 text-lg"></i> Java
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="70"></div>
+        </div>
+      </div>
+
+      <div class="skill-item">
+        <div class="flex justify-between text-sm mb-1 items-center">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-database text-blue-400 text-lg"></i> SQL
+          </span>
+          <span class="skill-percentage">0%</span>
+        </div>
+        <div class="w-full bg-gray-600 rounded-full h-2">
+          <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="65"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tailwind + Scroll Animation -->
+<style>
+.scroll-animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s ease-out;
+}
+.scroll-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.progress-bar {
+  width: 0;
+  transition: width 1.5s ease-in-out;
+}
+</style>
+
+<!-- Scroll Observer + Skill Bar Animation -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const scrollElements = document.querySelectorAll(".scroll-animate");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, { threshold: 0.1 });
+  scrollElements.forEach(el => observer.observe(el));
+
+  const skillBars = document.querySelectorAll(".progress-bar");
+  const skillPercentages = document.querySelectorAll(".skill-percentage");
+
+  function animateSkills() {
+    skillBars.forEach((bar, index) => {
+      const level = bar.getAttribute("data-level");
+      bar.style.width = level + "%";
+      skillPercentages[index].textContent = level + "%";
+    });
+  }
+
+  const skillsObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        animateSkills();
+        skillsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll(".skill-container").forEach(container => {
+    skillsObserver.observe(container);
+  });
+
+});
+</script>
+
+
+</section><br><br><br>
+
+    <!-- ============================================== -->
+    <!-- 5. RESUME SECTION -->
+    <!-- ============================================== -->
+<br><br><br><br><br><br><br><br><br>
+
+ <section id="resume-section">
+<!-- Resume Content Directly in Body -->
+<div class="text-center mb-12 ms-5">
+  <h2 class="text-3xl sm:text-4xl font-bold text-white relative inline-block pb-3">
+    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-12 bg-green-500 rounded-full"></span>
+    Resume
+  </h2>
+  <p class="mt-4 max-w-3xl mx-auto text-gray-400">
+   Discover my professional story, highlighting my expertise in front-end and back-end development, technical achievements, and a portfolio of successful projects that reflect dedication, creativity, and excellence
+  </p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-10 ml-20">
+  <!-- Left Column -->
+  <div class="lg:col-span-1 space-y-8 scroll-animate">
+     <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+      <img 
+  src="not hd.png"
+  alt="Profile"
+  class="w-40 h-40 object-cover rounded-2xl mx-auto mb-6 
+         shadow-[0_4px_20px_rgba(0,0,0,0.5)] 
+         ring-4 ring-gray-700 
+         hover:ring-green-400 hover:scale-105 
+         transition-all duration-500 ease-out"
+/>
+
+      <h3 class="text-xl font-bold text-white text-center">Professional Summary</h3>
+      <p class="text-sm text-center text-gray-300 mb-6">
+        Passionate Web Developer creating modern, responsive, and high-performance websites and web applications, delivering clean and user-friendly digital experiences.
+      </p>
+
+      <h3 class="text-xl font-bold text-white border-b border-gray-600 pb-2 mb-4">Contact Information</h3>
+      <div class="space-y-3 text-sm">
+        <p class="flex items-start gap-3"><i class="fas fa-map-marker-alt text-green-500 mt-1"></i> Punjab Bathinda Talwandi-sabo
+</p>
+        <p class="flex items-center gap-3"><i class="fas fa-envelope text-green-500"></i> mdinjamama9@gmail.com</p>
+        <p class="flex items-center gap-3"><i class="fas fa-phone text-green-500"></i> +91 7739495175</p>
+        <p class="flex items-center gap-3"><i class="fab fa-linkedin text-green-500"></i> linkedin.com/in/mdinjamam</p>
+      </div>
+
+      <h3 class="text-xl font-bold text-white border-b border-gray-600 pb-2 mb-4 mt-6">Technical Skills</h3>
+      <div class="space-y-4 skill-container">
+        <div class="skill-item">
+          <div class="flex justify-between text-sm mb-1"><span>Web Development</span><span class="skill-percentage" data-target="95">0%</span></div>
+          <div class="w-full bg-gray-600 rounded-full h-2">
+            <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="65"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between text-sm mb-1"><span>UI/UX Design</span><span class="skill-percentage" data-target="85">0%</span></div>
+          <div class="w-full bg-gray-600 rounded-full h-2">
+            <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="80"></div>
+          </div>
+        </div>
+        <div class="skill-item">
+          <div class="flex justify-between text-sm mb-1"><span> Google Cloud </span><span class="skill-percentage" data-target="90">0%</span></div>
+          <div class="w-full bg-gray-600 rounded-full h-2">
+            <div class="progress-bar bg-green-500 h-2 rounded-full" data-level="60"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+  </div>
+
+  <!-- Right Column -->
+  <div class="lg:col-span-2 space-y-12 scroll-animate">
+    <!-- Professional Experience -->
+      <div>
+      <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3"><i class="fas fa-briefcase text-green-500"></i> Professional Experience</h3>
+      <div class="relative border-l-2 border-gray-700 pl-8 space-y-10">
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white">Web Developer</h4>
+          <p class="text-sm text-gray-400">2024 - Present | Tech Innovations Inc.</p>
+          <ul class="list-disc pl-5 mt-2 text-sm space-y-1">
+            <li>creating responsive, user-friendly websites and web applications using modern technologies.</li>
+            <li>Using code like HTML5, CSS3, Bootstrap 5, JavaScript, Tailwind CSS, PHP, C/C++, and Java.</li>
+            <li>highlighting my expertise in front-end and back-end development, technical achievements</li>
+          </ul>
+        </div>
+        <!--  -->
+        
+        <!--  -->
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div>
+      <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3"><i class="fas fa-graduation-cap text-green-500"></i> Education</h3>
+      <div class="relative border-l-2 border-gray-700 pl-8 space-y-10">
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white">Bachelor of Computer Applications</h4>
+          <p class="text-sm text-gray-400">2023 - 2026 | Guru Kashi University Talwandi sabo Bathinda Punjab</p>
+        </div>
+         <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white">Higher Secondary</h4>
+          <p class="text-sm text-gray-400">2021 - 2023 | High School dulampur chakai, jamui (Bihar)</p>
+        </div>
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white">Secondary</h4>
+          <p class="text-sm text-gray-400">22019 - 2021 | High School dulampur chakai, jamui (Bihar)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certifications -->
+    <div>
+      <h3 class="text-2xl font-bold text-white mb-6 flex items-center gap-3"><i class="fas fa-certificate     text-green-500"></i> Certifications</h3>
+      <div class="relative border-l-2 border-gray-700 pl-8 space-y-10">
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white"> Award of Excellence in AI Innovation– ICIAI International Conference, 2024</h4>
+          <p class="text-sm text-gray-400">2024</p>
+        </div>
+      </div>
+
+      
+      <div class="relative border-l-2 border-gray-700 pl-8 space-y-10">
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white"> Google Cloud Computing Foundations– SWAYAM, NPTEL– IIT Kharagpur</h4>
+          <p class="text-sm text-gray-400">2024</p>
+        </div>
+      </div>
+
+      <div class="relative border-l-2 border-gray-700 pl-8 space-y-10">
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1 h-4 w-4 rounded-full bg-white border-4 border-gray-800"></div>
+          <h4 class="text-lg font-bold text-white"> Web Development– Arinotech Labs Pvt. Ltd., 2024</h4>
+          <p class="text-sm text-gray-400">2024</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Scroll animations
+  const scrollElements = document.querySelectorAll(".scroll-animate");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.1 });
+  scrollElements.forEach(el => observer.observe(el));
+
+  // Skill bar animation
+  const skillBars = document.querySelectorAll(".progress-bar");
+  const skillPercentages = document.querySelectorAll(".skill-percentage");
+
+  const skillsObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        skillBars.forEach((bar, index) => {
+          const level = bar.getAttribute("data-level");
+          bar.style.width = level + "%";
+          skillPercentages[index].textContent = level + "%";
+        });
+        skillsObserver.disconnect(); // Animate once
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll(".skill-container").forEach(container => {
+    skillsObserver.observe(container);
+  });
+});
+</script>
+
+</section>
+    <!-- ============================================== -->
+    <!-- 6. PORTFOLIO SECTION -->
+    <!-- ============================================== -->
+<!-- Portfolio Section Directly in Body -->
+ <br><br><br><br><br><br>
+
+  <section id="portfolio-section">
+<div class="text-center mb-12 scroll-animate">
+  <h2 class="text-3xl sm:text-4xl font-bold text-white relative inline-block pb-3">
+    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-12 bg-green-500 rounded-full"></span>
+    Portfolio
+  </h2>
+  <p class="mt-8 max-w-4xl mx-auto text-gray-400">
+Discover my digital creations — responsive, high-performance, and visually stunning projects that bring ideas to life.
+  </p>
+</div>
+
+<!-- Filter Buttons -->
+<div class="flex flex-wrap justify-center gap-4 mb-12 text-lg scroll-animate">
+  <button class="portfolio-filter-btn active text-green-400 transition duration-300 pb-1 border-b-2 border-green-500" data-filter="all">All Work</button>
+  <button class="portfolio-filter-btn text-gray-400 hover:text-white transition duration-300 pb-1 border-b-2 border-transparent hover:border-gray-500" data-filter="branding">Web Development</button>
+  <button class="portfolio-filter-btn text-gray-400 hover:text-white transition duration-300 pb-1 border-b-2 border-transparent hover:border-gray-500" data-filter="web-design">UI/UX Design</button>
+  <button class="portfolio-filter-btn text-gray-400 hover:text-white transition duration-300 pb-1 border-b-2 border-transparent hover:border-gray-500" data-filter="photography">Frontend Design</button>
+  <button class="portfolio-filter-btn text-gray-400 hover:text-white transition duration-300 pb-1 border-b-2 border-transparent hover:border-gray-500" data-filter="print-design">Personal Projects</button>
+</div>
+
+<!-- Portfolio Grid -->
+<div id="portfolio-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 scroll-animate">
+  <!-- Item 1 -->
+  <div class="portfolio-item group relative overflow-hidden rounded-lg shadow-xl" data-category="branding print-design">
+    <img src="img4.png" alt="Portfolio Image 1" class="w-full h-full object-cover transition duration-500">
+    <div class="portfolio-item-overlay absolute inset-0 flex flex-col justify-end p-4 text-white">
+      <div class="flex justify-center items-center w-full mb-2 opacity-0 group-hover:opacity-100 transition duration-300">
+        <div class="flex gap-3 text-2xl">
+          <a href="" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-eye"></i></a>
+          <a target="_blank" href="https://themewagon.github.io/training-studio/" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-link"></i></a>
+        </div>
+      </div>
+      <p class="text-sm text-green-400 mb-1">Brand Identity</p>
+      <h4 class="text-xl font-semibold">GYM </h4>
+    </div>
+  </div>
+
+  <!-- Item 2 -->
+  <div class="portfolio-item group relative overflow-hidden rounded-lg shadow-xl" data-category="photography">
+    <img src="img2.png" alt="Portfolio Image 2" class="w-full h-full object-cover transition duration-500">
+    <div class="portfolio-item-overlay absolute inset-0 flex flex-col justify-end p-4 text-white">
+      <div class="flex justify-center items-center w-full mb-2 opacity-0 group-hover:opacity-100 transition duration-300">
+        <div class="flex gap-3 text-2xl">
+          <a href="#" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-eye"></i></a>
+          <a target="_blank" href="https://ansari-clinic.netlify.app/" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-link"></i></a>
+        </div>
+      </div>
+      <p class="text-sm text-green-400 mb-1">Web Application</p>
+      <h4 class="text-xl font-semibold">Medilab</h4>
+    </div>
+  </div>
+
+  <!-- Item 3 -->
+  <div class="portfolio-item group relative overflow-hidden rounded-lg shadow-xl" data-category="web-design">
+    <img src="https://bootstrapmade.com/content/templatefiles/Strive/Strive-bootstrap-website-template-md.webp" alt="Portfolio Image 3" class="w-full h-full object-cover transition duration-500">
+    <div class="portfolio-item-overlay absolute inset-0 flex flex-col justify-end p-4 text-white">
+      <div class="flex justify-center items-center w-full mb-2 opacity-0 group-hover:opacity-100 transition duration-300">
+        <div class="flex gap-3 text-2xl">
+          <a href="#" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-eye"></i></a>
+          <a target="_blank" href="https://bootstrapmade.com/demo/Strive/" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-link"></i></a>
+        </div>
+      </div>
+      <p class="text-sm text-green-400 mb-1">Web Design</p>
+      <h4 class="text-xl font-semibold"></h4>
+    </div>
+  </div>
+
+  <div class="portfolio-item group relative overflow-hidden rounded-lg shadow-xl" data-category="web-design">
+    <img src="img1.png" alt="Portfolio Image 3" class="w-full h-full object-cover transition duration-500">
+    <div class="portfolio-item-overlay absolute inset-0 flex flex-col justify-end p-4 text-white">
+      <div class="flex justify-center items-center w-full mb-2 opacity-0 group-hover:opacity-100 transition duration-300">
+        <div class="flex gap-3 text-2xl">
+          <a href="#" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-eye"></i></a>
+          <a target="_blank" href="https://graceful-puffpuff-335405.netlify.app/" class="h-10 w-10 bg-white/20 hover:bg-white/40 rounded-full flex items-center justify-center"><i class="fas fa-link"></i></a>
+        </div>
+      </div>
+      <p class="text-sm text-green-400 mb-1">Web Design</p>
+      <h4 class="text-xl font-semibold">ServicePlus</h4>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // Scroll animations
+  const scrollElements = document.querySelectorAll(".scroll-animate");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) entry.target.classList.add("visible");
+    });
+  }, { threshold: 0.1 });
+  scrollElements.forEach(el => observer.observe(el));
+
+  // Portfolio filter functionality
+  const filterButtons = document.querySelectorAll(".portfolio-filter-btn");
+  const portfolioItems = document.querySelectorAll(".portfolio-item");
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      // Active class toggle
+      filterButtons.forEach(b => b.classList.remove("active", "text-green-400", "border-green-500"));
+      btn.classList.add("active", "text-green-400", "border-green-500");
+
+      const filter = btn.dataset.filter;
+      portfolioItems.forEach(item => {
+        if(filter === "all" || item.dataset.category.includes(filter)) {
+          item.classList.remove("hidden");
+          item.classList.add("block");
+        } else {
+          item.classList.add("hidden");
+          item.classList.remove("block");
+        }
+      });
+    });
+  });
+});
+
+</script>
+
+</section>
+    <!-- ============================================== -->
+    <!-- 7. SERVICES SECTION -->
+    <!-- ============================================== -->
+<!-- Services Section Directly in Body -->
+ <br>
+
+  <section id="services-section">
+ <!-- Services Section -->
+<section class="py-20 bg-gray-900 text-white">
+  <div class="text-center mb-12 scroll-animate opacity-0 translate-y-10 transition-all duration-700 ease-out">
+     <h2 class="text-3xl sm:text-4xl font-bold text-white relative inline-block pb-3">
+      <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-12 bg-green-500 rounded-full"></span>
+      Services
+     </h2>
+     <p class="mt-4 max-w-xl mx-auto text-gray-400">
+     Delivering creative, scalable, and user-friendly web solutions to help businesses grow and engage effectively in the digital world
+    </p>
+  </div>
+
+  <!-- Services Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-animate opacity-0 translate-y-10 transition-all duration-700 ease-out">
+    <!-- Service 1 -->
+    <div class="p-8 rounded-xl shadow-lg text-center bg-gray-700 transition-transform duration-300 hover:scale-[1.03] hover:shadow-green-500/20">
+      <div class="mb-6">
+        <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-500 text-gray-900 text-3xl shadow-lg shadow-green-500/30">
+          <i class="fas fa-pen -brush"></i>
+        </div>
+      </div>
+      <h3 class="text-2xl font-bold mb-3">UI/UX Design
+</h3>
+      <p class="text-gray-300 text-sm mb-4">
+      Creating intuitive and visually appealing user interfaces that enhance user experience and drive engagement with your product.
+      </p>
+      <a href="#" class="text-green-500 font-bold text-sm hover:text-green-400 transition flex items-center justify-center">
+        <!-- LEARN MORE <i class="fas fa-arrow-right ml-2"></i> -->
+      </a>
+    </div>
+
+<!-- Service 2 -->
+     <div class="p-8 rounded-xl shadow-lg text-center bg-gray-700 transition-transform duration-300 hover:scale-[1.03] hover:shadow-green-500/20">
+      <div class="mb-6">
+        <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-500 text-gray-900 text-3xl shadow-lg shadow-green-500/30">
+          <i class="fas fa-cloud -brush"></i>
+        </div>
+      </div>
+      <h3 class="text-2xl font-bold mb-3">Google Cloud</h3>
+      <p class="text-gray-300 text-sm mb-4">
+       aining hands-on experience with Google Cloud to deliver modern, cloud-ready web applications.
+      </p>
+      <a href="#" class="text-green-500 font-bold text-sm hover:text-green-400 transition flex items-center justify-center">
+        <!-- LEARN MORE <i class="fas fa-arrow-right ml-2"></i> -->
+      </a>
+    </div>
+
+    
+
+
+<!--  -->
+
+
+    <!-- Service 3 -->
+    <div class="p-8 rounded-xl shadow-lg text-center bg-gray-700 transition-transform duration-300 hover:scale-[1.03] hover:shadow-green-500/20">
+      <div class="mb-6">
+        <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-500 text-gray-900 text-3xl shadow-lg shadow-green-500/30">
+          <i class="fas fa-code"></i>
+        </div>
+      </div>
+      <h3 class="text-2xl font-bold mb-3">Web Development</h3>
+      <p class="text-gray-300 text-sm mb-4">
+        Building modern, responsive websites and applications with clean code, optimal performance, and seamless user experiences across all devices.
+      </p>
+      <a href="#" class="text-green-500 font-bold text-sm hover:text-green-400 transition flex items-center justify-center">
+        <!-- LEARN MORE <i class="fas fa-arrow-right ml-2"></i> -->
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Scroll Animation Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const scrollElements = document.querySelectorAll(".scroll-animate");
+
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          entry.target.classList.remove("opacity-0", "translate-y-10");
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    }, { threshold: 0.2 });
+
+    scrollElements.forEach(el => observer.observe(el));
+  });
+</script>
+
+<!-- Extra CSS for smooth animation -->
+<style>
+  .scroll-animate.visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: all 0.7s ease-out;
+  }
+</style>
+
+<!-- Font Awesome for icons -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+
+
+
+</section>
+    <!-- ============================================== -->
+    <!-- 8. CONTACT SECTION -->
+    <!-- ============================================== -->
+ <br><br><br>
+
+  <section id="contact-section">
+
+<section class="py-20 px-6 md:px-24 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+
+  <!-- Background Glow Animation -->
+  <div class="absolute inset-0 -z-10">
+    <div class="absolute w-72 h-72 bg-green-500/20 rounded-full blur-3xl top-10 left-10 animate-pulse"></div>
+    <div class="absolute w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl bottom-10 right-10 animate-ping"></div>
+  </div>
+
+  <!-- Title -->
+ <div class="text-center mb-12 scroll-animate opacity-0 translate-y-10 transition-all duration-700 ease-out">
+     <h2 class="text-3xl sm:text-4xl font-bold text-white relative inline-block pb-3">
+      <span class="absolute bottom-0 left-1/2 -translate-x-1/2 h-1 w-12 bg-green-500 rounded-full"></span>
+      Contact
+     </h2>
+     <p class="mt-4 max-w-xl mx-auto text-gray-400">
+     Get in Touch – Your Ideas, Our Expertise"
+    </p>
+  </div>
+
+  <!-- Contact Container -->
+  <div class="grid md:grid-cols-2 gap-14 contact-container">
+
+    <!-- Left Side Info -->
+    <div class="space-y-8">
+      <div class="flex items-center gap-4 animate-slide-up" style="animation-delay: 0.2s;">
+        <div class="icon-box bg-gradient-to-r from-emerald-400 to-green-500 p-4 rounded-2xl shadow-lg shadow-emerald-500/20">
+          <i class="bi bi-envelope text-2xl text-white"></i>
+        </div>
+        <div>
+          <h4 class="text-sm uppercase text-gray-400">Email Us</h4>
+          <p class="text-lg font-semibold">mdinjamama9@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+        <div class="icon-box bg-gradient-to-r from-emerald-400 to-green-500 p-4 rounded-2xl shadow-lg shadow-emerald-500/20">
+          <i class="bi bi-telephone text-2xl text-white"></i>
+        </div>
+        <div>
+          <h4 class="text-sm uppercase text-gray-400">Call Us</h4>
+          <p class="text-lg font-semibold">+91 7739495175</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 animate-slide-up" style="animation-delay: 0.6s;">
+        <div class="icon-box bg-gradient-to-r from-emerald-400 to-green-500 p-4 rounded-2xl shadow-lg shadow-emerald-500/20">
+          <i class="bi bi-geo-alt text-2xl text-white"></i>
+        </div>
+        <div>
+          <h4 class="text-sm uppercase text-gray-400">Visit Us</h4>
+          <p class="text-lg font-semibold">Talwandi sabo Bathinda, Punjab </p>
+        </div>
+      </div>
+
+      <p class="text-gray-400 text-base mt-8 leading-relaxed animate-slide-up" style="animation-delay: 0.8s;">
+        Whether it's a new project, a partnership, or just a friendly chat — we’re always open to connect and innovate.
+      </p>
+    </div>
+
+    <!-- Right Side Form -->
+    <form class="space-y-6 bg-gray-800/60 backdrop-blur-lg p-8 rounded-2xl shadow-xl shadow-emerald-500/10 animate-slide-up" style="animation-delay: 1s;">
+      <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent">Send a Message</h2>
+      
+      <div class="grid md:grid-cols-2 gap-5">
+        <input type="text" placeholder="Full Name" class="input-style" required />
+        <input type="email" placeholder="Email Address" class="input-style" required />
+      </div>
+      <input type="text" placeholder="Subject" class="input-style" required />
+      <textarea rows="5" placeholder="Your Message..." class="input-style" required></textarea>
+      <button type="submit" class="btn-submit w-full">Send Message</button>
+    </form>
+  </div>
+
+  <!-- Google Map -->
+ <div class="map-container mt-16 animate-slide-up" style="animation-delay: 1.2s;"> 
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3420.123456789012!2d75.2431234!3d30.1856789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39101912abcdef0%3A0x123456789abcdef0!2sTalwandi%20Sabo%2C%20Bathinda%2C%20Punjab%2C%20India!5e0!3m2!1sen!2sin!4v1697119020603!5m2!1sen!2sin"
+      width="100%" height="400" style="border:0; border-radius:1rem;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</div>
+
+
+  <!-- Animation CSS -->
+  <style>
+    @keyframes fade-in {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slide-up {
+      0% { opacity: 0; transform: translateY(50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in { animation: fade-in 1s ease forwards; }
+    .animate-slide-up { opacity: 0; }
+
+    .input-style {
+      width: 100%;
+      background-color: #1e293b;
+      color: white;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+      outline: none;
+      transition: all 0.3s;
+    }
+
+    .input-style:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 15px #10b981;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: white;
+      padding: 14px 0;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .btn-submit:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px #10b981;
+    }
+  </style>
+
+  <!-- Animation JS -->
+  <script>
+    document.addEventListener("scroll", () => {
+      document.querySelectorAll(".animate-slide-up").forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100 && !el.classList.contains("animated")) {
+          el.classList.add("animated");
+          el.style.animation = "slide-up 1s ease forwards";
+          const delay = el.getAttribute("style")?.match(/animation-delay:\s*([0-9.]+s)/);
+          if (delay) el.style.animationDelay = delay[1];
+        }
+      });
+    });
+  </script>
+
+</section>
+    
+</section>
+  <!-- === 9. FOOTER SECTION === -->
+
+   <section id="footer-section">
+  <footer class="text-center py-12 px-6">
+    <!-- Title -->
+    <h2 class="text-3xl md:text-4xl font-semibold text-white mb-3 animate-fadeInUp">Md Injamam Ansari </h2>
+
+    <!-- Subtitle -->
+    <p class="italic text-gray-400 mb-8 text-sm md:text-base animate-fadeInUp [animation-delay:0.2s]">
+     
+    </p>
+
+    <!-- Social Icons -->
+    <div class="flex justify-center gap-4 mb-8">
+      
+      <a target="_blank" href="https://www.facebook.com/rahmanhajd.ansari.3939" class="bg-green-400 text-gray-900 rounded-full w-10 h-10 flex items-center justify-center text-xl hover:scale-110 hover:bg-white hover:text-green-500 transition-all duration-300 animate-fadeInUp [animation-delay:0.6s]">
+        <i class="bi bi-facebook"></i>
+      </a>
+      <a target="_blank" href="https://www.instagram.com/ov__injmam/?igsh=MW9scTdyeGI0bWFqdw%3D%3D#" class="bg-green-400 text-gray-900 rounded-full w-10 h-10 flex items-center justify-center text-xl hover:scale-110 hover:bg-white hover:text-green-500 transition-all duration-300 animate-fadeInUp [animation-delay:0.8s]">
+        <i class="bi bi-instagram"></i>
+      </a>
+      
+      <a target="_blank" href="https://www.linkedin.com/in/md-injamam-ansari-aa3911367/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3B8QMHxXi1SjWOYPuWM9kkNg%3D%3D" class="bg-green-400 text-gray-900 rounded-full w-10 h-10 flex items-center justify-center text-xl hover:scale-110 hover:bg-white hover:text-green-500 transition-all duration-300 animate-fadeInUp [animation-delay:1.2s]">
+        <i class="bi bi-linkedin"></i>
+      </a>
+    </div>
+
+    <!-- Divider -->
+    <div class="w-full h-px bg-gray-700 mb-6 animate-fadeInUp [animation-delay:1.4s]"></div>
+
+    <!-- Footer Text -->
+    <p class="text-sm animate-fadeInUp [animation-delay:1.6s]">
+      Copyright © <span class="text-white font-semibold">Md Injamam</span> All Rights Reserved
+    </p>
+    <p class="text-sm mt-1 animate-fadeInUp [animation-delay:1.8s]">
+      Designed by <a href="#" class="text-green-400 hover:underline">Injamam</a>
+    </p>
+  </footer>
+
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Tailwind Custom Animations -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+          animation: {
+            fadeInUp: 'fadeInUp 1s ease forwards',
+          },
+        },
+      },
+    };
+  </script>
+
+</section>
+  </main>
+
+<!-- scroll down/up -->
+
+<!-- Scroll To Top Button -->
+<div id="scrollToTop" 
+     class="hidden fixed bottom-6 right-6 rounded-full cursor-pointer 
+            bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 p-[2px] z-50">
+  <div class="inner bg-gray-900 rounded-full flex items-center justify-center w-12 h-12 
+              text-green-400 hover:text-white transition-all duration-300 
+              hover:shadow-[0_0_20px_5px_rgba(16,185,129,0.6)]">
+    <i class="fas fa-arrow-up text-2xl"></i>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  const scrollBtn = document.getElementById("scrollToTop");
+
+  // Show button when user scrolls down
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.remove("hidden");
+      scrollBtn.style.animation = "fadeInUp 0.5s ease forwards";
+    } else {
+      scrollBtn.style.animation = "fadeOutDown 0.5s ease forwards";
+      setTimeout(() => scrollBtn.classList.add("hidden"), 400);
+    }
+  });
+
+  // Smooth scroll to top
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+
+<!-- Animations -->
+<style>
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeOutDown {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(40px); }
+  }
+  /* Glowing gradient border pulse */
+  #scrollToTop {
+    animation: borderGlow 3s linear infinite;
+  }
+  @keyframes borderGlow {
+    0% { box-shadow: 0 0 10px #10b981, 0 0 20px #34d399, 0 0 30px #10b981; }
+    50% { box-shadow: 0 0 20px #34d399, 0 0 40px #10b981, 0 0 60px #34d399; }
+    100% { box-shadow: 0 0 10px #10b981, 0 0 20px #34d399, 0 0 30px #10b981; }
+  }
+</style>
+
+<!--  -->
+
+  <!-- === JAVASCRIPT FOR INTERACTIVITY AND ANIMATION === -->
+  <script>
+
+    // 1. Sidebar Toggle for Mobile 
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('active');
+    }
+
+    const navLinks = document.querySelectorAll('.nav-link');
+    // Get all sections for scroll detection
+    const contentSections = document.querySelectorAll('.content-section');
+    const offset = 150; // Offset to determine when a section is considered 'active'
+
+    // 2. Logic to update the active link in the sidebar based on scroll position
+    function updateActiveLink() {
+      let currentSection = 'home-section';
+      const scrollPosition = window.scrollY;
+
+      contentSections.forEach(section => {
+        // Check if the current scroll position is past the start of the section
+        // and before the end of the section
+        if (section.offsetTop <= scrollPosition + offset) {
+          currentSection = section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-target') === currentSection) {
+          link.classList.add('active');
+        }
+      });
+
+      // Check for skill animation when scrolling
+      animateSkillsOnScroll(currentSection);
+    }
+
+    // 3. Skill Bar Animation Logic (Triggered on Scroll)
+    function animateSkills(section) {
+      // Check if the animation was already run for this section
+      if (section.getAttribute('data-animated') === 'true') return;
+
+      const skillBars = section.querySelectorAll('.progress-bar');
+      const percentages = section.querySelectorAll('.skill-percentage');
+
+      // 3.1 Animate the bar widths
+      skillBars.forEach(bar => {
+        const level = bar.getAttribute('data-level');
+        bar.style.width = '0'; // Reset width for smooth re-animation on page load/scroll
+        setTimeout(() => {
+          bar.style.width = level + '%';
+        }, 50);
+      });
+
+      // 3.2 Percentage counter animation
+      percentages.forEach(span => {
+        const target = parseInt(span.getAttribute('data-target'));
+        let current = 0;
+        // Clear any existing interval to prevent overlapping
+        if (span.interval) clearInterval(span.interval);
+
+        const increment = target / 50; // Control speed
+
+        span.interval = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(span.interval);
+          }
+          span.textContent = Math.floor(current) + '%';
+        }, 10);
+      });
+
+      section.setAttribute('data-animated', 'true');
+    }
+
+    // Helper to decide which sections need animation check
+    function animateSkillsOnScroll(activeSectionId) {
+      if (activeSectionId === 'resume-section' || activeSectionId === 'skills-section') {
+        const sectionElement = document.getElementById(activeSectionId);
+        if (sectionElement && sectionElement.getAttribute('data-animated') === 'false') {
+          animateSkills(sectionElement);
+        }
+      }
+    }
+
+    // 4. Attach scroll and load events
+    window.addEventListener('scroll', updateActiveLink);
+    window.addEventListener('resize', updateActiveLink);
+
+    // Add event listeners for smooth scrolling and mobile close
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const targetId = e.currentTarget.getAttribute('data-target');
+        const targetSection = document.getElementById(targetId);
+
+        // Use native smooth scrolling (better compatibility)
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 1200) {
+          toggleSidebar();
+        }
+
+        // Manually trigger active state for instant feedback on click
+        navLinks.forEach(l => l.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+      });
+    });
+
+    // Initial call to set active link and run animation if needed
+    window.addEventListener('load', () => {
+      // Scroll to the top for a clean start
+      window.scrollTo(0, 0);
+      updateActiveLink();
+    });
+
+
+    // 5. Portfolio Filter Logic (kept from previous code)
+    const filterButtons = document.querySelectorAll('.portfolio-filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', function () {
+        filterButtons.forEach(btn => {
+          btn.classList.remove('active', 'text-green-400', 'border-green-500');
+          btn.classList.add('text-gray-400', 'hover:text-white', 'border-transparent', 'hover:border-gray-500');
+        });
+        this.classList.add('active', 'text-green-400', 'border-green-500');
+        this.classList.remove('text-gray-400', 'hover:text-white', 'border-transparent', 'hover:border-gray-500');
+
+        const filterValue = this.getAttribute('data-filter');
+
+        portfolioItems.forEach(item => {
+          const itemCategories = item.getAttribute('data-category').split(' ');
+
+          item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          item.style.opacity = '0';
+          item.style.transform = 'scale(0.9)';
+
+          setTimeout(() => {
+            const shouldShow = filterValue === 'all' || itemCategories.includes(filterValue);
+
+            if (shouldShow) {
+              item.style.display = 'block';
+              setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+              }, 50);
+            } else {
+              item.style.display = 'none';
+            }
+          }, 400);
+        });
+      });
+    });
+  </script>
+</body>
+
+
+<!-- Tailwind CSS nav-link example -->
+<style>
+  
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = document.querySelectorAll(".nav-link");
+  const sections = document.querySelectorAll("section");
+
+  // Smooth scroll on click
+  navLinks.forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute("data-target");
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        targetSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+    });
+  });
+
+  // Activate nav-link based on scroll
+  function activateNavLinkOnScroll() {
+    let currentSectionId = "";
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      if (pageYOffset >= sectionTop - sectionHeight / 2) {
+        currentSectionId = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach(link => {
+      if (link.getAttribute("data-target") === currentSectionId) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", activateNavLinkOnScroll);
+
+  // Initial check
+  activateNavLinkOnScroll();
+});
+</script>
+
+
+
+
+</html>
